@@ -1,24 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Link } from 'react-router-dom';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { LinkContainer } from "react-router-bootstrap";
+import Routes from './Routes';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App container">
+      <Navbar fluid collapseOnSelect bg="light" variant="light" expand="md">
+        <Navbar.Brand>
+            <Link to="/">CoffeeIsWork</Link>
+        </Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse>
+          <Nav className="ml-auto">
+            <LinkContainer to="/signup" className="mr-sm-2">
+              <Link>Signup</Link>
+            </LinkContainer>
+            <LinkContainer to="/login" className="mr-sm-2">
+              <Link>Login</Link>
+            </LinkContainer>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+      <Routes />
     </div>
   );
 }
