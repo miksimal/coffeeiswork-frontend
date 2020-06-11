@@ -15,15 +15,15 @@ Amplify.configure({
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
     userPoolWebClientId: config.cognito.APP_CLIENT_ID
   },
-  /* API: {
+  API: {
     endpoints: [
       {
-        name: "notes",
+        name: "watercooler",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
       },
     ]
-  } */
+  }
 });
 
 ReactDOM.render(
