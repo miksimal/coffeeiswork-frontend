@@ -4,6 +4,7 @@ import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import NewUser from './containers/NewUser';
+import WaterCooler from './containers/WaterCooler';
 
 
 export default function Routes() {
@@ -17,6 +18,9 @@ export default function Routes() {
     </Route>
     <Route exact path="/users/new">
       <NewUser />
+    </Route>
+    <Route exact path="/users/watercooler">
+      <WaterCooler />
     </Route>
     <Route>
         <NotFound />

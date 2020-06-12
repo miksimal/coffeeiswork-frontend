@@ -1,0 +1,11 @@
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.controls .LoaderButton {
+  margin-left: 10px;
+  margin-right: 10px;
+}

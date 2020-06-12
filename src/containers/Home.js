@@ -66,7 +66,7 @@ export default function Home() {
   function renderUsers() {
     return (
       <>
-      <div className="pair"><LoaderButton>Generate watercooler chats</LoaderButton></div>
+      <div className="pair"><LoaderButton href="/users/watercooler">Generate watercooler chats</LoaderButton></div>
       <div className="users">
         <h3>Users in your organisation</h3>
         <ListGroup variant="flush">

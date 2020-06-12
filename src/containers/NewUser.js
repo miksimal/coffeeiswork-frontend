@@ -65,7 +65,7 @@ export default function NewUser() {
           isLoading={isLoading}
           disabled={!validateForm()}
         >
-          Add
+          Add new user
         </LoaderButton>
       </form>
     </div>
