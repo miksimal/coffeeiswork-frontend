@@ -5,8 +5,8 @@ export default {
     },
     cognito: {
       REGION: "eu-west-1",
-      USER_POOL_ID: "eu-west-1_9rWYwmj2f",
-      APP_CLIENT_ID: "6pkkt9lvkq0ffdt4kc8qlcr5ar",
-      IDENTITY_POOL_ID: "eu-west-1:a82dd7a2-accc-421f-b788-f57eae85c7e5"
+      USER_POOL_ID: "eu-west-1_KdjbQBqhI",
+      APP_CLIENT_ID: "7olb0smc1q1f5fnndpbjosa8gb",
+      IDENTITY_POOL_ID: "eu-west-1:2e955709-9a75-4f6c-929c-018e1368930b"
     }
   };

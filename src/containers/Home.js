@@ -18,6 +18,7 @@ export default function Home() {
 
       try {
         const users = await loadUsers();
+        // get the organisation name here (ABC Corp) to display - from cognito?
         setUsers(users);
       } catch (e) {
         console.log(e);

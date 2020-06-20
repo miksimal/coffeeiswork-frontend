@@ -29,20 +29,36 @@ export default function WaterCooler() {
     onLoad();
   }, [isAuthenticated]);
 
+  async function reShuffle() {
+    setIsLoading(true);
+    try {
+      const pairs = await generatePairs();
+      setPairs(pairs);
+    } catch (e) {
+      console.log(e);
+    }
+
+    setIsLoading(false);
+  }
+
   function generatePairs() {
       return API.get("watercooler", "/pair");
   }
 
+  function emailPairs() {
+    return API.post("watercooler", "/emailPair");
+}
+
   function renderPairsList(pairs) {
     return pairs.map(e =>
-    <ListGroup.Item>{e[0].email + " <☕️> " + e[1].email}</ListGroup.Item>
+    <ListGroup.Item>{e[0].email + " ☕️ " + e[1].email}</ListGroup.Item>
     )
   }
 
   function renderPairs() {
     return (
       <div className="pairs">
-      <h3>Here are your WaterCooler chat pairings</h3>
+      <h3>Here are your water cooler pairs</h3>
         <ListGroup variant="flush">
           {!isLoading && renderPairsList(pairs)}
         </ListGroup>
@@ -53,8 +69,8 @@ export default function WaterCooler() {
   return (
     <>
     <div className="controls">
-      <LoaderButton>Re-shuffle</LoaderButton>
-      <LoaderButton>Connect each pair</LoaderButton>
+      <LoaderButton onClick={() => reShuffle()}>Re-shuffle</LoaderButton>
+      <LoaderButton onClick={() => emailPairs()}>Connect each pair</LoaderButton>
     </div>
     {!isLoading && renderPairs()}
     </>
