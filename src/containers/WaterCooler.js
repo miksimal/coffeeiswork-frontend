@@ -69,8 +69,8 @@ export default function WaterCooler() {
   return (
     <>
     <div className="controls">
-      <LoaderButton onClick={() => reShuffle()}>Re-shuffle</LoaderButton>
-      <LoaderButton onClick={() => emailPairs()}>Connect each pair</LoaderButton>
+      <LoaderButton onClick={() => reShuffle()}>Re-shuffle <span role="img" aria-label="reshuffle emoji">🔀</span></LoaderButton>
+      <LoaderButton onClick={() => emailPairs()}>Connect each pair <span role="img" aria-label="handshake emoji">🤝</span></LoaderButton>
     </div>
     {!isLoading && renderPairs()}
     </>

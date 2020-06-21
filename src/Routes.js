@@ -4,6 +4,7 @@ import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import NewUser from './containers/NewUser';
+import Signup from "./containers/Signup";
 import WaterCooler from './containers/WaterCooler';
 
 
@@ -11,10 +12,13 @@ export default function Routes() {
   return (
 <Switch>
     <Route exact path="/">
-        <Home />
+      <Home />
     </Route>
     <Route exact path="/login">
-        <Login />
+      <Login />
+    </Route>
+    <Route exact path="/signup">
+      <Signup />
     </Route>
     <Route exact path="/users/new">
       <NewUser />
@@ -23,7 +27,7 @@ export default function Routes() {
       <WaterCooler />
     </Route>
     <Route>
-        <NotFound />
+      <NotFound />
     </Route>
 </Switch>
   );
