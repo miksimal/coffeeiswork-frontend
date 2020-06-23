@@ -20,7 +20,7 @@ export default function NewUser() {
 
     setIsLoading(true);
 
-    let user = {organisationId: "ABC Corp", email: email, firstName: firstName};
+    let user = {email: email, firstName: firstName};
 
     try {
         await addUser(user);

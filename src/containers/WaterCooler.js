@@ -1,14 +1,30 @@
 import { API } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 import "./WaterCooler.css";
+import { useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { ListGroup } from "react-bootstrap";
+import { ListGroup, Modal, Button } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 
 export default function WaterCooler() {
+  const history = useHistory();
   const [pairs, setPairs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSending, setIsSending] = useState(false);
   const { isAuthenticated } = useAppContext();
+  const [show, setShow] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handleClose = () => {
+    if(showSuccessModal) {
+      history.push("/");
+    } else {
+      setShow(false);
+      setShowErrorModal(false);
+    }
+  }
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     async function onLoad() {
@@ -45,8 +61,16 @@ export default function WaterCooler() {
       return API.get("watercooler", "/pair");
   }
 
-  function emailPairs() {
-    return API.post("watercooler", "/emailPair");
+  async function emailPairs() {
+    setIsSending(true);
+    try {
+      await API.post("watercooler", "/emailPair");
+      setShowSuccessModal(true);
+    } catch (e) {
+      console.log(e);
+      setShowErrorModal(true);
+      setIsSending(false);
+    }
 }
 
   function renderPairsList(pairs) {
@@ -66,11 +90,72 @@ export default function WaterCooler() {
     )
   }
 
+  function renderModalContent() {
+    if (!showErrorModal && !showSuccessModal) {
+      return (
+        <>
+        <Modal.Header closeButton>
+        <Modal.Title>Ready to get the conversations going?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>This will connect each pair via email. Is that all good?</Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cancel
+            </Button>
+            <LoaderButton isLoading={isSending} variant="primary" onClick={emailPairs}>
+              Connect pairs
+            </LoaderButton>
+        </Modal.Footer>
+        </>
+      );
+    } else if (showErrorModal && !showSuccessModal) {
+      return (
+        <>
+        <Modal.Header closeButton>
+        <Modal.Title>Please try again</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Something went wrong. Sorry about that. Would you mind trying again?</Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cancel
+            </Button>
+            <LoaderButton isLoading={isSending} variant="primary" onClick={emailPairs}>
+              Connect pairs
+            </LoaderButton>
+        </Modal.Footer>
+        </>
+      )
+    } else {
+      return (
+        <>
+        <Modal.Header closeButton>
+        <Modal.Title>Success! 🎉</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>All your water cooler pairs have been connected. Let the ☕️ flow!</Modal.Body>
+        <Modal.Footer>
+            <LoaderButton variant="primary" onClick={handleClose}>
+              Done
+            </LoaderButton>
+        </Modal.Footer>
+        </>
+      )
+  }
+  }
+
+  function renderModal() {
+    return (
+      <Modal show={show} onHide={handleClose}>
+        {renderModalContent()}
+      </Modal>
+    )
+  }
+
   return (
     <>
+    {renderModal()}
     <div className="controls">
       <LoaderButton onClick={() => reShuffle()}>Re-shuffle <span role="img" aria-label="reshuffle emoji">🔀</span></LoaderButton>
-      <LoaderButton onClick={() => emailPairs()}>Connect each pair <span role="img" aria-label="handshake emoji">🤝</span></LoaderButton>
+      <LoaderButton onClick={() => handleShow()}>Connect each pair <span role="img" aria-label="handshake emoji">🤝</span></LoaderButton>
     </div>
     {!isLoading && renderPairs()}
     </>
