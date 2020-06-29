@@ -8,3 +8,21 @@
       max-width: 320px;
     }
   }
+
+.react-csv-input {
+  max-width: 360px;
+  margin: 10px auto;
+}
+
+.csv-input-container {
+  text-align: center;
+  margin: 10px auto;
+}
+
+.csv-input {
+  padding: 10px;
+  display: block;
+  margin: 15px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

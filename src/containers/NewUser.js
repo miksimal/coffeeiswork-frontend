@@ -2,7 +2,7 @@ import { API } from "aws-amplify";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import CSVReader from "react-csv-reader";
-import { FormGroup, FormControl, FormLabel, Modal, Button } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel, Modal, Button, ListGroup } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import "./NewUser.css";
 
@@ -10,6 +10,7 @@ export default function NewUser() {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
+  const [employeeArray, setEmployeeArray] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -27,7 +28,19 @@ export default function NewUser() {
       setShowErrorModal(false);
     }
   }
-  const handleForce = (data) => console.log(data);
+  const handleForce = (data) => {
+    // TODO validation
+    console.log(data);
+    setEmployeeArray(data);
+    setShowConfirmationModal(true);
+    
+  }
+
+  function renderEmployeeImportList() {
+    return employeeArray.map(e =>
+    <ListGroup.Item>{e.name + " - " + e.email}</ListGroup.Item>
+    )
+  }
 
   const papaparseOptions = {
     header: true,
@@ -37,10 +50,10 @@ export default function NewUser() {
   };
 
 const reader = (
-  <div className="container">
+  <div className="csv-input-container">
     <CSVReader
       cssClass="react-csv-input"
-      label="Upload a CSV file to add multiple employees. The file needs two columns: firstName, email (in that order)."
+      label="Upload a CSV file to add multiple employees. The file needs two columns: name, email. &nbsp;"
       onFileLoaded={handleForce}
       parserOptions={papaparseOptions}
     />
@@ -52,15 +65,17 @@ const reader = (
       return (
         <>
         <Modal.Header closeButton>
-        <Modal.Title>Ready to get the conversations going?</Modal.Title>
+        <Modal.Title>Does this look correct?</Modal.Title>
         </Modal.Header>
-        <Modal.Body>This will connect each pair via email. Is that all good?</Modal.Body>
+        <Modal.Body>You're about to add the following employees:
+        {renderEmployeeImportList()}
+        </Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
             <LoaderButton isLoading={isLoading} variant="primary">
-              Connect pairs
+              Add employees
             </LoaderButton>
         </Modal.Footer>
         </>
