@@ -9,7 +9,7 @@ import "./NewUser.css";
 export default function NewUser() {
   const history = useHistory();
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
+  const [name, setName] = useState("");
   const [employeeArray, setEmployeeArray] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -17,7 +17,7 @@ export default function NewUser() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   function validateForm() {
-    return email.length > 0 && firstName.length > 0;
+    return email.length > 0 && name.length > 0;
   }
 
   const handleClose = () => {
@@ -29,11 +29,9 @@ export default function NewUser() {
     }
   }
   const handleForce = (data) => {
-    // TODO validation
-    console.log(data);
+    // TODO add validation of the csv
     setEmployeeArray(data);
     setShowConfirmationModal(true);
-    
   }
 
   function renderEmployeeImportList() {
@@ -68,13 +66,13 @@ const reader = (
         <Modal.Title>Does this look correct?</Modal.Title>
         </Modal.Header>
         <Modal.Body>You're about to add the following employees:
-        {renderEmployeeImportList()}
+          <ListGroup className="employeeImportList">{renderEmployeeImportList()}</ListGroup>
         </Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <LoaderButton isLoading={isLoading} variant="primary">
+            <LoaderButton isLoading={isLoading} onClick={tryToAddEmployees} variant="primary">
               Add employees
             </LoaderButton>
         </Modal.Footer>
@@ -91,7 +89,7 @@ const reader = (
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <LoaderButton isLoading={isLoading} variant="primary">
+            <LoaderButton isLoading={isLoading} onClick={tryToAddEmployees} variant="primary">
               Try again
             </LoaderButton>
         </Modal.Footer>
@@ -122,26 +120,29 @@ const reader = (
     )
   }
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
+    setEmployeeArray([{email: email, name: name}]);
+    tryToAddEmployees();
+  }
+
+  async function tryToAddEmployees() {
     setIsLoading(true);
-
-    let user = {email: email, firstName: firstName};
-
     try {
-        await addUser(user);
-        setShowSuccessModal(true);
-        // history.push("/");
+      await addEmployees(employeeArray);
+      setShowSuccessModal(true);
+      setIsLoading(false);
+      // history.push("/");
     } catch (e) {
-        console.log(e);
-        setIsLoading(false);
-        setShowErrorModal(true);
+      console.log(e);
+      setIsLoading(false);
+      setShowErrorModal(true);
     }
   }
 
-  function addUser(user) {
+  function addEmployees(employees) {
       return API.post("watercooler", "/users", {
-          body: user
+          body: employees
       })
   }
 
@@ -159,11 +160,11 @@ const reader = (
             onChange={e => setEmail(e.target.value)}
           />
         </FormGroup>
-        <FormGroup controlId="firstName" bsSize="large">
+        <FormGroup controlId="name" bsSize="large">
         <FormLabel>First name</FormLabel>
           <FormControl
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
             type="text"
           />
         </FormGroup>
