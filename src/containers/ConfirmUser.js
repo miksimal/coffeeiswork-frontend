@@ -10,8 +10,6 @@ export default function ConfirmUser() {
 
 
   let { userId, orgId } = useParams();
-  console.log(orgId);
-  console.log(userId);
 
   async function confirmUser() {
     setIsLoading(true);
@@ -30,16 +28,33 @@ export default function ConfirmUser() {
     }
   }
 
+  function renderConfirm() {
+    return (
+      <>
+      <h2>Please confirm below to start receiving watercooler chat invitations!</h2>
+      <LoaderButton
+        block
+        bsStyle="primary"
+        isLoading={isLoading}
+        onClick={confirmUser}
+      >Confirm ☕️
+      </LoaderButton>
+      </>
+    )
+  }
+
+  function renderSuccess() {
+    return (
+      <>
+        <h2>All set! You'll start receiving watercooler chat invitations in your inbox.</h2>
+        <p>You can now close this window.</p>
+      </>
+    )
+  }
+
   return (
     <>
-    <h2>Please confirm below to start receiving watercooler chat invitations!</h2>
-    <LoaderButton
-      block
-      bsStyle="primary"
-      isLoading={isLoading}
-      onClick={confirmUser}
-    >Confirm ☕️
-    </LoaderButton>
+    {success ? renderSuccess() : renderConfirm()}
     </>
   );
 }

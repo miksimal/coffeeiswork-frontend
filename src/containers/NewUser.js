@@ -26,6 +26,7 @@ export default function NewUser() {
     } else {
       setShowConfirmationModal(false);
       setShowErrorModal(false);
+      setEmployeeArray([]);
     }
   }
   const handleForce = (data) => {
@@ -120,10 +121,23 @@ const reader = (
     )
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    setEmployeeArray([{email: email, name: name}]);
-    tryToAddEmployees();
+    tryToAddEmployee();
+  }
+
+  async function tryToAddEmployee() {
+    setIsLoading(true);
+    try {
+      await addEmployees([{email: email, name: name}]);
+      setShowSuccessModal(true);
+      setIsLoading(false);
+      // history.push("/");
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+      setShowErrorModal(true);
+    }
   }
 
   async function tryToAddEmployees() {
