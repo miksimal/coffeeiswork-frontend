@@ -7,7 +7,8 @@ import NewUser from './containers/NewUser';
 import Signup from "./containers/Signup";
 import WaterCooler from './containers/WaterCooler';
 import ConfirmUser from './containers/ConfirmUser';
-
+import Unsubscribe from './containers/Unsubscribe';
+import ConfirmUnsubscribe from './containers/ConfirmUnsubscribe';
 
 export default function Routes() {
   return (
@@ -29,6 +30,12 @@ export default function Routes() {
     </Route>
     <Route path="/confirmation/:orgId/:userId">
       <ConfirmUser />
+    </Route>
+    <Route exact path="/unsubscribe">
+      <Unsubscribe />
+    </Route>
+    <Route path="/unsubscribe/:orgId/:userId">
+      <ConfirmUnsubscribe />
     </Route>
     <Route>
       <NotFound />

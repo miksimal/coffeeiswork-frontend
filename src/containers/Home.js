@@ -36,7 +36,7 @@ export default function Home() {
 
   function renderUserList(users) {
     return users.map(e =>
-    <ListGroup.Item>{e.firstName + " - " + e.email}</ListGroup.Item>
+    <ListGroup.Item>{e.firstName + " - " + e.email + " - " + e.status}</ListGroup.Item>
     )
   }
 

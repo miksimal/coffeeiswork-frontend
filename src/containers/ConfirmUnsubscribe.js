@@ -1,19 +1,20 @@
 import React, { useState, } from "react";
 import { useParams } from "react-router-dom";
-import "./ConfirmUser.css";
+import "./ConfirmUnsubscribe.css";
 import { API } from "aws-amplify";
+import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 
-export default function ConfirmUser() {
+export default function ConfirmUnsubscribe() {
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   let { userId, orgId } = useParams();
 
-  async function confirmUser() {
+  async function confirmUnsubscribe() {
     setIsLoading(true);
     try {
-      await API.post("watercooler", "/confirm", {
+      await API.post("watercooler", "/unsubscribe/confirm", {
         body: {
           orgId: orgId,
           userId: userId
@@ -27,16 +28,16 @@ export default function ConfirmUser() {
     }
   }
 
-  function renderConfirm() {
+  function renderConfirmUnsubscribe() {
     return (
       <>
-      <h2>Please confirm below to start receiving watercooler chat invitations!</h2>
+      <h2>Click the button to confirm that you'd like to unsubscribe.</h2>
       <LoaderButton
         block
         bsStyle="primary"
         isLoading={isLoading}
-        onClick={confirmUser}
-      >Confirm ☕️
+        onClick={confirmUnsubscribe}
+      >Confirm
       </LoaderButton>
       </>
     )
@@ -45,15 +46,15 @@ export default function ConfirmUser() {
   function renderSuccess() {
     return (
       <>
-        <h2>All set! 🎉</h2>
-        <p>You'll start receiving watercooler chat invitations in your inbox. You can now close this window.</p>
+        <h2>Successfully unsubscribed.</h2>
+        <p>We are sorry to see you go. Contact your organisation admin if you'd like to reactivate your account. You can now close this window.</p>
       </>
     )
   }
 
   return (
     <>
-    {success ? renderSuccess() : renderConfirm()}
+    {success ? renderSuccess() : renderConfirmUnsubscribe()}
     </>
   );
 }
