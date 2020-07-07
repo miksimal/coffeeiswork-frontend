@@ -41,7 +41,7 @@ function App() {
     <div className="App container">
       <Navbar fluid collapseOnSelect bg="light" variant="light" expand="md">
         <Navbar.Brand>
-            <Link to="/">CoffeeIsWork</Link>
+            <Link to="/">Virtual Watercooler</Link>
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>

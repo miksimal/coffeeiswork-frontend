@@ -29,16 +29,16 @@ export default function ConfirmUser() {
 
   function renderConfirm() {
     return (
-      <>
-      <h2>Please confirm below to start receiving watercooler chat invitations!</h2>
+      <div className="Confirm">
+      <h3>Welcome! Please confirm to start receiving watercooler chat invitations</h3>
       <LoaderButton
-        block
+        size="lg"
         bsStyle="primary"
         isLoading={isLoading}
         onClick={confirmUser}
       >Confirm ☕️
       </LoaderButton>
-      </>
+      </div>
     )
   }
 

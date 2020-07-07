@@ -2,7 +2,6 @@ import React, { useState, } from "react";
 import { useParams } from "react-router-dom";
 import "./ConfirmUnsubscribe.css";
 import { API } from "aws-amplify";
-import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 
 export default function ConfirmUnsubscribe() {
@@ -33,7 +32,7 @@ export default function ConfirmUnsubscribe() {
       <>
       <h2>Click the button to confirm that you'd like to unsubscribe.</h2>
       <LoaderButton
-        block
+        size="lg"
         bsStyle="primary"
         isLoading={isLoading}
         onClick={confirmUnsubscribe}

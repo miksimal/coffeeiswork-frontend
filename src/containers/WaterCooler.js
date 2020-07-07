@@ -3,7 +3,7 @@ import LoaderButton from "../components/LoaderButton";
 import "./WaterCooler.css";
 import { useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { ListGroup, Modal, Button } from "react-bootstrap";
+import { ListGroup, Modal, Button, Spinner } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 
 export default function WaterCooler() {
@@ -15,6 +15,7 @@ export default function WaterCooler() {
   const [show, setShow] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(true);
 
   const handleClose = () => {
     if(showSuccessModal) {
@@ -29,6 +30,8 @@ export default function WaterCooler() {
   useEffect(() => {
     async function onLoad() {
       if (!isAuthenticated) {
+        setShowSpinner(false);
+        setIsLoading(false);
         return
       }
 
@@ -39,6 +42,7 @@ export default function WaterCooler() {
         console.log(e);
       }
 
+      setShowSpinner(false);
       setIsLoading(false);
     }
 
@@ -150,14 +154,30 @@ export default function WaterCooler() {
     )
   }
 
+  function renderControlsAndPairs() {
+    return (
+      <>
+        <div className="controls">
+        <LoaderButton onClick={() => reShuffle()}>Re-shuffle <span role="img" aria-label="reshuffle emoji">🔀</span></LoaderButton>
+        <LoaderButton onClick={() => handleShow()}>Connect each pair <span role="img" aria-label="handshake emoji">🤝</span></LoaderButton>
+        </div>
+        {!isLoading && renderPairs()}
+      </>
+    )
+  }
+
+  function renderSpinner() {
+    return (
+      <div className="spinner">
+      <Spinner animation="border" variant="primary" role="status"><span className="sr-only">Loading</span></Spinner>
+      </div>
+    )
+  }
+
   return (
     <>
     {renderModal()}
-    <div className="controls">
-      <LoaderButton onClick={() => reShuffle()}>Re-shuffle <span role="img" aria-label="reshuffle emoji">🔀</span></LoaderButton>
-      <LoaderButton onClick={() => handleShow()}>Connect each pair <span role="img" aria-label="handshake emoji">🤝</span></LoaderButton>
-    </div>
-    {!isLoading && renderPairs()}
+    {showSpinner ? renderSpinner() : renderControlsAndPairs()}
     </>
   )
 }

@@ -12,15 +12,23 @@
   color: #999;
 }
 
+.Home h4 {
+  text-align: left;
+}
+
 .users h3 {
-  text-align: center;
+  text-align: left;
   margin-bottom: 20px;
   margin-top: 40px;
 }
 
-.pair {
+.LoaderButton {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.spinner {
   margin-top: 60px;
   display: flex;
   justify-content: center;
 }
-

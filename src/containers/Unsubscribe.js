@@ -25,10 +25,10 @@ export default function Unsubscribe() {
 
   function renderUnsubscribe() {
     return (
-      <>
+      <div className="Confirm">
       <h2>Please enter your email below to unsubscribe</h2>
+      <form className="UnsubscribeForm">
       <FormGroup controlId="email" bsSize="large">
-          <FormLabel>Email</FormLabel>
           <FormControl
             autoFocus
             type="email"
@@ -36,14 +36,14 @@ export default function Unsubscribe() {
             onChange={e => setEmail(e.target.value)}
           />
         </FormGroup>
+      </form>
       <LoaderButton
-        block
         bsStyle="primary"
         isLoading={isLoading}
         onClick={unsubscribe}
       >Unsubscribe
       </LoaderButton>
-      </>
+      </div>
     )
   }
 
