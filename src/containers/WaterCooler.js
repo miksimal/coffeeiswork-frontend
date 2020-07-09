@@ -68,7 +68,7 @@ export default function WaterCooler() {
   async function emailPairs() {
     setIsSending(true);
     try {
-      await API.post("watercooler", "/emailPair");
+      await API.post("watercooler", "/emailPairs");
       setShowSuccessModal(true);
     } catch (e) {
       console.log(e);
