@@ -7,8 +7,7 @@ import LoaderButton from "../components/LoaderButton";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
-  const [orgName, setOrgName] = useState("");
-  const { isAuthenticated } = useAppContext();
+  const {orgName, isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   const [showSpinner, setShowSpinner] = useState(true);
 
@@ -22,7 +21,6 @@ export default function Home() {
 
       try {
         const users = await loadUsers();
-        if(users.length>0) setOrgName(users[0].organisationName);
         setUsers(users);
       } catch (e) {
         console.log(e);

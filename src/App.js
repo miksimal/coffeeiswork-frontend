@@ -11,6 +11,9 @@ function App() {
   const history = useHistory();
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
+  const [orgId, setOrgId] = useState("");
+  const [orgName, setOrgName] = useState("");
+
 
   useEffect(() => {
     onLoad();
@@ -18,7 +21,9 @@ function App() {
   
   async function onLoad() {
     try {
-      await Auth.currentSession();
+      let session = await Auth.currentSession();
+      setOrgId(session.idToken.payload["custom:organisationId"]);
+      setOrgName(session.idToken.payload["custom:organisationName"]);
       userHasAuthenticated(true);
     }
     catch(e) {
@@ -60,7 +65,7 @@ function App() {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, orgId, orgName }}>
        <Routes />
       </AppContext.Provider>
     </div>

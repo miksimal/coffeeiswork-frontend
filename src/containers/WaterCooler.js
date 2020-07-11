@@ -11,7 +11,7 @@ export default function WaterCooler() {
   const [pairs, setPairs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
-  const { isAuthenticated } = useAppContext();
+  const { isAuthenticated, orgId } = useAppContext();
   const [show, setShow] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -62,13 +62,19 @@ export default function WaterCooler() {
   }
 
   function generatePairs() {
-      return API.get("watercooler", "/pair");
+      return API.post("watercooler", "/pair", {
+        body: {
+          orgId: orgId,
+        }
+      });
   }
 
   async function emailPairs() {
     setIsSending(true);
     try {
-      await API.post("watercooler", "/emailPairs");
+      await API.post("watercooler", "/emailPairs", {
+        body: pairs
+      });
       setShowSuccessModal(true);
     } catch (e) {
       console.log(e);
