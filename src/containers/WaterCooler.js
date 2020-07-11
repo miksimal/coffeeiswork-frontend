@@ -85,19 +85,36 @@ export default function WaterCooler() {
 
   function renderPairsList(pairs) {
     return pairs.map(e =>
-    <ListGroup.Item>{e[0].email + " ☕️ " + e[1].email}</ListGroup.Item>
-    )
+      <ListGroup.Item>{e[0].email + " ☕️ " + e[1].email}</ListGroup.Item>
+    );
   }
 
   function renderPairs() {
-    return (
-      <div className="pairs">
-      <h3>Here are your water cooler pairs</h3>
-        <ListGroup variant="flush">
-          {!isLoading && renderPairsList(pairs)}
-        </ListGroup>
-      </div>
-    )
+    if (pairs.length > 0 && pairs[0][1]) {
+      return (
+        <>
+        {!isLoading && renderControls()}
+        {!isLoading &&
+        <div className="pairs">
+          <h3>Here are your watercooler chat pairs</h3>
+          <ListGroup variant="flush">
+            {renderPairsList(pairs)}
+          </ListGroup>
+        </div>}
+        </>
+      )
+    } else {
+      return (
+        <>
+        {!isLoading && 
+        <div className="pairs">
+          <h3>Sorry, you need to have 2 or more confirmed members to generate watercooler chats</h3>
+          <LoaderButton onClick={() => history.push("/users/new")}>Add new members</LoaderButton>
+          <LoaderButton onClick={() => history.push("/")}>See current members</LoaderButton>
+        </div>}
+        </>
+      )
+    }
   }
 
   function renderModalContent() {
@@ -160,14 +177,13 @@ export default function WaterCooler() {
     )
   }
 
-  function renderControlsAndPairs() {
+  function renderControls() {
     return (
       <>
         <div className="controls">
         <LoaderButton onClick={() => reShuffle()}>Re-shuffle <span role="img" aria-label="reshuffle emoji">🔀</span></LoaderButton>
         <LoaderButton onClick={() => handleShow()}>Connect each pair <span role="img" aria-label="handshake emoji">🤝</span></LoaderButton>
         </div>
-        {!isLoading && renderPairs()}
       </>
     )
   }
@@ -183,7 +199,7 @@ export default function WaterCooler() {
   return (
     <>
     {renderModal()}
-    {showSpinner ? renderSpinner() : renderControlsAndPairs()}
+    {showSpinner ? renderSpinner() : renderPairs()}
     </>
   )
 }
