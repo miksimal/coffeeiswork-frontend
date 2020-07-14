@@ -24,7 +24,8 @@ export default function Signup() {
   });
   const history = useHistory();
   const [newUser, setNewUser] = useState(null);
-  const { userHasAuthenticated } = useAppContext();
+  const [orgId, setOrgIdInState] = useState("");
+  const { userHasAuthenticated, setOrgId, setOrgName } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
@@ -47,13 +48,15 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
+        const id = uuidv4();
+        setOrgIdInState(id);
         const newUser = await Auth.signUp({
           username: fields.email,
           password: fields.password,
           attributes: {
             name: fields.name,
             'custom:organisationName': fields.organisationName,
-            'custom:organisationId': uuidv4(),
+            'custom:organisationId': id,
           }
         });
         setIsLoading(false);
@@ -74,6 +77,8 @@ export default function Signup() {
         await Auth.signIn(fields.email, fields.password);
 
         userHasAuthenticated(true);
+        setOrgId(orgId);
+        setOrgName(fields.organisationName);
         history.push("/");
     } catch (e) {
         //onError(e);

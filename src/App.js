@@ -46,7 +46,7 @@ function App() {
     <div className="App container">
       <Navbar fluid collapseOnSelect bg="light" variant="light" expand="md">
         <Navbar.Brand>
-            <Link to="/">Virtual Watercooler</Link>
+            <Link to="/">Virtual Watercooler (BETA)</Link>
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
@@ -65,7 +65,7 @@ function App() {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, orgId, orgName }}>
+      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, orgId, setOrgId, orgName, setOrgName }}>
        <Routes />
       </AppContext.Provider>
     </div>

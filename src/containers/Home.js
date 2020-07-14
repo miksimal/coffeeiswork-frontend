@@ -44,15 +44,24 @@ export default function Home() {
 
   function renderLander() {
     return (
+      <>
       <div className="lander">
         <h1>Virtual Watercooler</h1>
         <p></p>
-        <p>Keep your distributed organisation connected using our Cloud-enabled™️ watercooler<span role="img" aria-label="emoji coffee">☕️</span></p>
-        <h3>How it works</h3>
-        <h4>1. Sign up an organisation</h4>
-        <h4>2. Add members individually or by csv upload</h4>
-        <h4>3. Click the watercooler button to randomly pair members via email</h4>
+        <p>Connect your distributed organisation using our Cloud-enabled™️ watercooler</p>
+        <h4>How it works</h4>
+        <h5>1. Sign up an organisation 📝</h5>
+        <h5>2. Add members individually or by csv upload 👩🏽‍💻</h5>
+        <h5>3. Let the Watercooler randomly pair members via email 🥳</h5>
       </div>
+      <div className="testimonials">
+        <h4>What the People have to say</h4>
+        <h5>'Virtual watercooler changed my life'</h5>
+        <h5>'Wow, such Cloud-enabled'</h5>
+        <h5>'At Yuhuu Corporation, we increased productivity by 137% using virtual watercooler. Incredible!'</h5>
+        <h5>'If you like email, you'll LOVE this app!'</h5>
+      </div>
+      </>
     );
   }
 
