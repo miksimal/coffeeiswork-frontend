@@ -47,7 +47,7 @@ export default function Home() {
       <div className="lander">
         <h1>Virtual Watercooler</h1>
         <p></p>
-        <p>Keep your distributed organisation connected through the power of coffee <span role="img" aria-label="emoji coffee">☕️</span></p>
+        <p>Keep your distributed organisation connected using our Cloud-enabled™️ watercooler<span role="img" aria-label="emoji coffee">☕️</span></p>
         <h3>How it works</h3>
         <h4>1. Sign up an organisation</h4>
         <h4>2. Add members individually or by csv upload</h4>

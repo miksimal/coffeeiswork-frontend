@@ -27,8 +27,8 @@ function App() {
       userHasAuthenticated(true);
     }
     catch(e) {
-      if (e !== 'No current user') {
-        alert(e);
+      if (e.message !== 'User does not exist.') {
+        console.log(e.message);
       }
     }
   
