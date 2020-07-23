@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ListGroup, Spinner } from "react-bootstrap";
+import { ListGroup, Spinner, DropdownButton, Dropdown } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 import "./Home.css";
 import { API } from "aws-amplify";
@@ -7,6 +7,7 @@ import LoaderButton from "../components/LoaderButton";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
+  const [frequency, setFrequency] = useState("");
   const {orgName, isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   const [showSpinner, setShowSpinner] = useState(true);
@@ -20,8 +21,11 @@ export default function Home() {
       }
 
       try {
-        const users = await loadUsers();
-        setUsers(users);
+        const data = await loadUsers();
+        const index = data.map(e => e.userId).indexOf("RecurrenceRule");
+        const frequency = index >= 0 ? data.splice(index, 1)[0].frequency : "Never";
+        setFrequency(frequency);
+        setUsers(data);
       } catch (e) {
         console.log(e);
       }
@@ -80,6 +84,10 @@ export default function Home() {
       <h3>Users in {orgName}</h3>
         <LoaderButton variant="secondary" href="/users/new">Add new members</LoaderButton>
         <LoaderButton variant="secondary" href="/users/watercooler">Generate watercooler chats</LoaderButton>
+        <DropdownButton variant="secondary" title={frequency}>
+          <Dropdown.Item>Edit frequency</Dropdown.Item>
+          <Dropdown.Item>Delete</Dropdown.Item>
+        </DropdownButton>
       <ListGroup variant="flush">
         {!isLoading && renderUserList(users)}
       </ListGroup>
