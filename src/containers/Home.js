@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ListGroup, Spinner, DropdownButton, Dropdown } from "react-bootstrap";
+import { ListGroup, Spinner, DropdownButton, Dropdown, Toast } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 import "./Home.css";
 import { API } from "aws-amplify";
@@ -10,6 +10,8 @@ export default function Home() {
   const [frequency, setFrequency] = useState("");
   const {orgName, isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
+  const [showToast, setShowToast] = useState(false);
+  const [toastContent, setToastContent] = useState({});
   const [showSpinner, setShowSpinner] = useState(true);
 
   useEffect(() => {
@@ -38,6 +40,12 @@ export default function Home() {
 
   function loadUsers() {
     return API.get("watercooler", "/users");
+  }
+
+  function setFrequencyRequest(frequency) {
+    return API.post("watercooler", "/rules", {
+      body: frequency
+    });
   }
 
   function renderUserList(users) {
@@ -77,17 +85,66 @@ export default function Home() {
     )
   }
 
+  function renderToast(success, frequency) {
+    setShowToast(true);
+
+    if (success) {
+      switch (frequency) {
+        case 'Daily':
+          frequency = 'Watercooler chats will be arranged once a day';
+          break;
+        case 'Never':
+          frequency = 'No recurring watercooler chats will be arranged';
+          break;
+        default:
+          frequency = 'Watercooler chats will be arranged on ' + frequency;
+      }
+    }
+
+    let content = success ? 
+      {header: 'Success 🎉',
+      body: frequency} :
+      {header: 'Something went wrong',
+      body: 'Please try again or contact mikkel@virtualwatercooler.com'};
+
+    setToastContent(content);
+  }
+
   function renderLoaded() {
     return (
       <>
+        <LoaderButton variant="secondary" href="/users/watercooler">Generate watercooler chats</LoaderButton>
+        <DropdownButton
+          variant="secondary"
+          title={frequency}
+          onSelect={async (event) => {
+            try {
+              await setFrequencyRequest(event);
+              setFrequency(event);
+              renderToast(true, event)
+            } catch(err) {
+              console.log(err);
+              renderToast(false)
+            }
+          }}
+        >
+          {['Never', 'Daily'].map(el => {
+            if (el == frequency) {
+              return <Dropdown.Item eventKey={el} active>{el}</Dropdown.Item>;
+            } else {
+              return <Dropdown.Item eventKey={el}>{el}</Dropdown.Item>;
+            }})}
+          <Dropdown.Header>Weekly on:</Dropdown.Header>
+          {['Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays', 'Sundays'].map(el => {
+            if (el == frequency) {
+              return <Dropdown.Item eventKey={el} active>{el}</Dropdown.Item>;
+            } else {
+              return <Dropdown.Item eventKey={el}>{el}</Dropdown.Item>;
+            }})}
+        </DropdownButton>
     <div className="users">
       <h3>Users in {orgName}</h3>
         <LoaderButton variant="secondary" href="/users/new">Add new members</LoaderButton>
-        <LoaderButton variant="secondary" href="/users/watercooler">Generate watercooler chats</LoaderButton>
-        <DropdownButton variant="secondary" title={frequency}>
-          <Dropdown.Item>Edit frequency</Dropdown.Item>
-          <Dropdown.Item>Delete</Dropdown.Item>
-        </DropdownButton>
       <ListGroup variant="flush">
         {!isLoading && renderUserList(users)}
       </ListGroup>
@@ -107,6 +164,20 @@ export default function Home() {
   return (
     <div className="Home">
       {isAuthenticated ? renderUsers() : renderLander()}
+      <Toast show={showToast} onClose={() => setShowToast(!showToast)} 
+        delay={3000} autohide
+        style={{
+          position: 'absolute',
+          top: 5,
+          right: 5,
+          width: '300px'
+        }}
+        >
+        <Toast.Header>
+          <strong className="mr-auto">{toastContent.header}</strong>
+        </Toast.Header>
+        <Toast.Body>{toastContent.body}</Toast.Body>
+      </Toast>
     </div>
   );
 }
