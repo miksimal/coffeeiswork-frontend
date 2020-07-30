@@ -113,6 +113,9 @@ export default function Home() {
   function renderLoaded() {
     return (
       <>
+    <div className="users">
+      <h3>Users in {orgName}</h3>
+        <LoaderButton variant="secondary" href="/users/new">Add new members</LoaderButton>
         <LoaderButton variant="secondary" href="/users/watercooler">Generate watercooler chats</LoaderButton>
         <DropdownButton
           variant="secondary"
@@ -142,9 +145,6 @@ export default function Home() {
               return <Dropdown.Item eventKey={el}>{el}</Dropdown.Item>;
             }})}
         </DropdownButton>
-    <div className="users">
-      <h3>Users in {orgName}</h3>
-        <LoaderButton variant="secondary" href="/users/new">Add new members</LoaderButton>
       <ListGroup variant="flush">
         {!isLoading && renderUserList(users)}
       </ListGroup>
