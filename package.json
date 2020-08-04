@@ -20,7 +20,7 @@
     "start": "react-scripts start",
     "build": "REACT_APP_STAGE=prod react-scripts build",
     "deploy": "aws s3 sync build/ s3://virtualwatercooler --delete",
-    "postdeploy": "aws cloudfront create-invalidation --distribution-id EJ9SIX9TWL00M --paths '/*' && aws cloudfront create-invalidation --distribution-id E93ON6ZAQ8HHQ --paths ‘/*’",
+    "postdeploy": "aws cloudfront create-invalidation --distribution-id EJ9SIX9TWL00M --paths /* && aws cloudfront create-invalidation --distribution-id E93ON6ZAQ8HHQ --paths /*",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
