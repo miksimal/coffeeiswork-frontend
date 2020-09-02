@@ -2,7 +2,7 @@ import { API } from "aws-amplify";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import CSVReader from "react-csv-reader";
-import { FormGroup, FormControl, FormLabel, Modal, Button, ListGroup } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel, Modal, Button, ListGroup, Toast } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import "./NewUser.css";
 
@@ -15,6 +15,8 @@ export default function NewUser() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastContent, setToastContent] = useState({});
 
   function validateForm() {
     return email.length > 0 && name.length > 0;
@@ -24,6 +26,7 @@ export default function NewUser() {
     if(showSuccessModal) {
       history.push("/");
     } else {
+      document.getElementById('CSVReaderInput').value = '';
       setShowConfirmationModal(false);
       setShowErrorModal(false);
       setEmployeeArray([]);
@@ -31,8 +34,31 @@ export default function NewUser() {
   }
   const handleForce = (data) => {
     // TODO add validation of the csv
-    setEmployeeArray(data);
-    setShowConfirmationModal(true);
+    let validated = true;
+    if (!data.length > 0) {
+      validated = false;
+      setToastContent({header: 'Validation failed',
+      body: 'No data was found. Please check your csv and try again.'});
+    }
+    else {
+      data.forEach(member => {
+        if (!member.name?.length > 0
+          || !member.email?.length > 0) {
+          validated = false;
+        }}
+      );
+      if (!validated) {
+        setToastContent({header: 'Validation failed',
+        body: 'One or more names or emails were invalid. Please check your csv and try again.'});
+      }
+    }
+    if (validated) {
+      setEmployeeArray(data);
+      setShowConfirmationModal(true);
+    } else {
+      setShowToast(true);
+      setTimeout(() => document.getElementById('CSVReaderInput').value = '', 500);
+    }
   }
 
   function renderEmployeeImportList() {
@@ -51,8 +77,9 @@ export default function NewUser() {
 const reader = (
   <div className="csv-input-container">
     <CSVReader
+      inputId='CSVReaderInput'
       cssClass="react-csv-input"
-      label="Upload a CSV file to add multiple employees. The file needs two columns: name, email. &nbsp;"
+      label="Upload a CSV file to add multiple employees. The file needs two columns: name,email. &nbsp;"
       onFileLoaded={handleForce}
       parserOptions={papaparseOptions}
     />
@@ -83,9 +110,9 @@ const reader = (
       return (
         <>
         <Modal.Header closeButton>
-        <Modal.Title>Please try again</Modal.Title>
+        <Modal.Title>Something went wrong</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Something went wrong. Sorry about that. Would you mind trying again?</Modal.Body>
+        <Modal.Body>Sorry about that. Would you mind trying again?</Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Cancel
@@ -128,8 +155,10 @@ const reader = (
 
   async function tryToAddEmployee() {
     setIsLoading(true);
+    let employeeArray = [{email: email, name: name}]
+    setEmployeeArray(employeeArray);
     try {
-      await addEmployees([{email: email, name: name}]);
+      await addEmployees(employeeArray);
       setShowSuccessModal(true);
       setIsLoading(false);
       // history.push("/");
@@ -195,6 +224,18 @@ const reader = (
       </form>
     </div>
     {reader}
+    <Toast show={showToast} onClose={() => setShowToast(!showToast)} 
+        delay={4000} autohide
+        style={{
+          position: 'absolute',
+          width: '300px'
+        }}
+        >
+        <Toast.Header>
+          <strong className="mr-auto">{toastContent.header}</strong>
+        </Toast.Header>
+        <Toast.Body>{toastContent.body}</Toast.Body>
+      </Toast>
     </>
   );
 }
