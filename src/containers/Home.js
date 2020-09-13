@@ -6,9 +6,9 @@ import { API } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 
 export default function Home() {
-  const [users, setUsers] = useState([]);
-  const [frequency, setFrequency] = useState("");
-  const {orgName, isAuthenticated } = useAppContext();
+  const [members, setMembers] = useState([]);
+  const [organisation, setOrganisation] = useState({});
+  const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   const [showToast, setShowToast] = useState(false);
   const [toastContent, setToastContent] = useState({});
@@ -23,11 +23,10 @@ export default function Home() {
       }
 
       try {
-        const data = await loadUsers();
-        const index = data.map(e => e.userId).indexOf("RecurrenceRule");
-        const frequency = index >= 0 ? data.splice(index, 1)[0].frequency : "Never";
-        setFrequency(frequency);
-        setUsers(data);
+        const data = await loadMembersAndOrg();
+        const index = data.map(e => e.type).indexOf("Organisation");
+        setOrganisation(data.splice(index, 1)[0]);
+        setMembers(data);
       } catch (e) {
         console.log(e);
       }
@@ -38,8 +37,8 @@ export default function Home() {
     onLoad();
   }, [isAuthenticated]);
 
-  function loadUsers() {
-    return API.get("watercooler", "/users");
+  function loadMembersAndOrg() {
+    return API.get("watercooler", "/members");
   }
 
   function setFrequencyRequest(frequency) {
@@ -48,10 +47,10 @@ export default function Home() {
     });
   }
 
-  function renderUserList(users) {
-    return users.map(e =>
-    <ListGroup.Item>{e.firstName + " - " + e.email + " - " + e.status}</ListGroup.Item>
-    )
+  function renderMemberList(members) {
+    return members.map(e =>
+      <ListGroup.Item>{e.name + " - " + e.email + " - " + e.status}</ListGroup.Item>
+    );
   }
 
   function renderLander() {
@@ -113,17 +112,19 @@ export default function Home() {
   function renderLoaded() {
     return (
       <>
-    <div className="users">
-      <h3>Users in {orgName}</h3>
-        <LoaderButton variant="secondary" href="/users/new">Add new members</LoaderButton>
-        <LoaderButton variant="secondary" href="/users/watercooler">Generate watercooler chats</LoaderButton>
+    <div className="members">
+      <h3>Members in {organisation.name}</h3>
+        <LoaderButton variant="secondary" href="/members/new">Add new members</LoaderButton>
+        <LoaderButton variant="secondary" href="/members/watercooler">Generate watercooler chats</LoaderButton>
         <DropdownButton
           variant="secondary"
-          title={frequency}
+          title={organisation.frequency}
           onSelect={async (event) => {
             try {
               await setFrequencyRequest(event);
-              setFrequency(event);
+              let updatedOrg = {...organisation};
+              updatedOrg.frequency = event;
+              setOrganisation(updatedOrg);
               renderToast(true, event)
             } catch(err) {
               console.log(err);
@@ -132,28 +133,28 @@ export default function Home() {
           }}
         >
           {['Never', 'Daily'].map(el => {
-            if (el == frequency) {
+            if (el == organisation.frequency) {
               return <Dropdown.Item eventKey={el} active>{el}</Dropdown.Item>;
             } else {
               return <Dropdown.Item eventKey={el}>{el}</Dropdown.Item>;
             }})}
           <Dropdown.Header>Weekly on:</Dropdown.Header>
           {['Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays', 'Sundays'].map(el => {
-            if (el == frequency) {
+            if (el == organisation.frequency) {
               return <Dropdown.Item eventKey={el} active>{el}</Dropdown.Item>;
             } else {
               return <Dropdown.Item eventKey={el}>{el}</Dropdown.Item>;
             }})}
         </DropdownButton>
       <ListGroup variant="flush">
-        {!isLoading && renderUserList(users)}
+        {!isLoading && renderMemberList(members)}
       </ListGroup>
     </div>
     </>
     );
   }
 
-  function renderUsers() {
+  function renderMembers() {
     return (
       <>
       {showSpinner ? renderSpinner() : renderLoaded()}
@@ -163,7 +164,7 @@ export default function Home() {
 
   return (
     <div className="Home">
-      {isAuthenticated ? renderUsers() : renderLander()}
+      {isAuthenticated ? renderMembers() : renderLander()}
       <Toast show={showToast} onClose={() => setShowToast(!showToast)} 
         delay={3000} autohide
         style={{

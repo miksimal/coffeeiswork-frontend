@@ -6,7 +6,7 @@ import Login from "./containers/Login";
 import NewUser from './containers/NewUser';
 import Signup from "./containers/Signup";
 import WaterCooler from './containers/WaterCooler';
-import ConfirmUser from './containers/ConfirmUser';
+import ConfirmMember from './containers/ConfirmMember';
 import Unsubscribe from './containers/Unsubscribe';
 import ConfirmUnsubscribe from './containers/ConfirmUnsubscribe';
 
@@ -22,14 +22,14 @@ export default function Routes() {
     <Route exact path="/signup">
       <Signup />
     </Route>
-    <Route exact path="/users/new">
+    <Route exact path="/members/new">
       <NewUser />
     </Route>
-    <Route exact path="/users/watercooler">
+    <Route exact path="/members/watercooler">
       <WaterCooler />
     </Route>
-    <Route path="/confirmation/:orgId/:userId">
-      <ConfirmUser />
+    <Route path="/confirmation/:orgId/:email/:tokenId">
+      <ConfirmMember />
     </Route>
     <Route exact path="/unsubscribe">
       <Unsubscribe />

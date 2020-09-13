@@ -184,7 +184,7 @@ const reader = (
   }
 
   function addEmployees(employees) {
-      return API.post("watercooler", "/users", {
+      return API.post("watercooler", "/members", {
           body: employees
       })
   }
