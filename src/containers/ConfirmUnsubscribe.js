@@ -8,7 +8,7 @@ export default function ConfirmUnsubscribe() {
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  let { userId, orgId } = useParams();
+  const { orgId, email, tokenId } = useParams();
 
   async function confirmUnsubscribe() {
     setIsLoading(true);
@@ -16,7 +16,8 @@ export default function ConfirmUnsubscribe() {
       await API.post("watercooler", "/unsubscribe/confirm", {
         body: {
           orgId: orgId,
-          userId: userId
+          email: email,
+          tokenId: tokenId
         }
       });
       setSuccess(true);

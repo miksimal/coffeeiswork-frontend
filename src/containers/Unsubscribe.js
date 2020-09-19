@@ -1,5 +1,6 @@
 import React, { useState, } from "react";
 import "./Unsubscribe.css";
+import { useParams } from "react-router-dom";
 import { API } from "aws-amplify";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
@@ -9,11 +10,13 @@ export default function Unsubscribe() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
 
+  const { orgId } = useParams();
+
   async function unsubscribe() {
     setIsLoading(true);
     try {
       await API.post("watercooler", "/unsubscribe/request", {
-        body: {email: email}
+        body: {email: email, organisationId: orgId}
       });
       setSuccess(true);
       setIsLoading(false);;

@@ -73,7 +73,7 @@ export default function WaterCooler() {
     setIsSending(true);
     try {
       await API.post("watercooler", "/emailPairs", {
-        body: pairs
+        body: {pairs: pairs, orgId: orgId} 
       });
       setShowSuccessModal(true);
     } catch (e) {
@@ -109,7 +109,7 @@ export default function WaterCooler() {
         {!isLoading && 
         <div className="pairs">
           <h3>Sorry, you need to have 2 or more confirmed members to generate watercooler chats</h3>
-          <LoaderButton onClick={() => history.push("/users/new")}>Add new members</LoaderButton>
+          <LoaderButton onClick={() => history.push("/members/new")}>Add new members</LoaderButton>
           <LoaderButton onClick={() => history.push("/")}>See current members</LoaderButton>
         </div>}
         </>

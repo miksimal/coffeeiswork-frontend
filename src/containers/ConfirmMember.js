@@ -1,22 +1,23 @@
 import React, { useState, } from "react";
 import { useParams } from "react-router-dom";
-import "./ConfirmUser.css";
+import "./ConfirmMember.css";
 import { API } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 
-export default function ConfirmUser() {
+export default function ConfirmMember() {
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  let { userId, orgId } = useParams();
+  let { orgId, email, tokenId } = useParams();
 
-  async function confirmUser() {
+  async function confirmMember() {
     setIsLoading(true);
     try {
       await API.post("watercooler", "/confirm", {
         body: {
+          tokenId: tokenId,
           orgId: orgId,
-          userId: userId
+          email: email
         }
       });
       setSuccess(true);
@@ -35,7 +36,7 @@ export default function ConfirmUser() {
         size="lg"
         bsStyle="primary"
         isLoading={isLoading}
-        onClick={confirmUser}
+        onClick={confirmMember}
       >Confirm ☕️
       </LoaderButton>
       </div>

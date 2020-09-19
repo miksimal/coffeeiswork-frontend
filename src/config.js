@@ -1,28 +1,29 @@
 const dev = {
   apiGateway: {
     REGION: "eu-west-1",
-    URL: "https://1bbg0ta46i.execute-api.eu-west-1.amazonaws.com/dev"
+    URL: "https://7jo25ctdrb.execute-api.eu-west-1.amazonaws.com/dev"
   },
   cognito: {
     REGION: "eu-west-1",
-    USER_POOL_ID: "eu-west-1_KdjbQBqhI",
-    APP_CLIENT_ID: "7olb0smc1q1f5fnndpbjosa8gb",
-    IDENTITY_POOL_ID: "eu-west-1:2e955709-9a75-4f6c-929c-018e1368930b"
+    USER_POOL_ID: "eu-west-1_xXAqvbuK2",
+    APP_CLIENT_ID: "b4rjmsacsglai67r650v8l72",
+    IDENTITY_POOL_ID: "eu-west-1:de65c9b5-756f-4d8c-ad59-1ba07104c012"
   }
 };
 
 const prod = {
   apiGateway: {
     REGION: "eu-west-1",
-    URL: "https://gpl7ch4vu2.execute-api.eu-west-1.amazonaws.com/prod"
+    URL: "FIXhttps://gpl7ch4vu2.execute-api.eu-west-1.amazonaws.com/prod"
   },
   cognito: {
     REGION: "eu-west-1",
-    USER_POOL_ID: "eu-west-1_9CeByTnzD",
-    APP_CLIENT_ID: "1jf5l683kv8tfqcb317vqsnmq9",
-    IDENTITY_POOL_ID: "eu-west-1:960f9ae8-0a20-4323-9c8e-f34e621896b6"
+    USER_POOL_ID: "FIXeu-west-1_9CeByTnzD",
+    APP_CLIENT_ID: "Fix1jf5l683kv8tfqcb317vqsnmq9",
+    IDENTITY_POOL_ID: "FIXeu-west-1:960f9ae8-0a20-4323-9c8e-f34e621896b6"
   }
 };
+// TODO add the real prod values here once I've deployed to prod.
 
 const config = process.env.REACT_APP_STAGE === 'prod' ? prod : dev;
 
