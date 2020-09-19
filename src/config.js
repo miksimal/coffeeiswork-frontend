@@ -14,16 +14,15 @@ const dev = {
 const prod = {
   apiGateway: {
     REGION: "eu-west-1",
-    URL: "FIXhttps://gpl7ch4vu2.execute-api.eu-west-1.amazonaws.com/prod"
+    URL: "https://p1iihwl7si.execute-api.eu-west-1.amazonaws.com/prod"
   },
   cognito: {
     REGION: "eu-west-1",
-    USER_POOL_ID: "FIXeu-west-1_9CeByTnzD",
-    APP_CLIENT_ID: "Fix1jf5l683kv8tfqcb317vqsnmq9",
-    IDENTITY_POOL_ID: "FIXeu-west-1:960f9ae8-0a20-4323-9c8e-f34e621896b6"
+    USER_POOL_ID: "eu-west-1_tyumk149G",
+    APP_CLIENT_ID: "5fq28fqda8haenl2n7t1tlivte",
+    IDENTITY_POOL_ID: "eu-west-1:dda9478a-b246-44ec-8e93-04d6ebec0e16"
   }
 };
-// TODO add the real prod values here once I've deployed to prod.
 
 const config = process.env.REACT_APP_STAGE === 'prod' ? prod : dev;
 
