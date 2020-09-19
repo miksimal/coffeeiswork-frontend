@@ -73,7 +73,7 @@ export default function WaterCooler() {
     setIsSending(true);
     try {
       await API.post("watercooler", "/emailPairs", {
-        body: pairs
+        body: {pairs: pairs, orgId: orgId} 
       });
       setShowSuccessModal(true);
     } catch (e) {

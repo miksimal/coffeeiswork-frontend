@@ -31,10 +31,10 @@ export default function Routes() {
     <Route path="/confirmation/:orgId/:email/:tokenId">
       <ConfirmMember />
     </Route>
-    <Route exact path="/unsubscribe">
+    <Route exact path="/unsubscribe/:orgId">
       <Unsubscribe />
     </Route>
-    <Route path="/unsubscribe/:orgId/:userId">
+    <Route exact path="/confirmunsubscribe/:orgId/:email/:tokenId">
       <ConfirmUnsubscribe />
     </Route>
     <Route>
